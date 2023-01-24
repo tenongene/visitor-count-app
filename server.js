@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 //initialize redis-db
 const client = redis.createClient({
   socket: {
-  host: "db"
+  host: "db-svc"
   }
 });
 client.connect();

@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: visitor-count-app
+  name: visitor-count-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visitor-count-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: visitor-count-app
+    spec:
+      containers:
+      - image: tenongene/visitor-count-app
+        name: visitor-count-app
+        resources: {}
+status: {}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: visitor-count-db
+  name: visitor-count-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visitor-count-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: visitor-count-db
+    spec:
+      containers:
+      - image: redis:7-alpine
+        name: redis
+        resources: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: visitor-count-app
+  name: app-svc
+spec:
+  ports:
+  - port: 7575
+    protocol: TCP
+    targetPort: 7575
+  selector:
+    app: visitor-count-app
+  type: NodePort
+status:
+  loadBalancer: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: visitor-count-db
+  name: db-svc
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: visitor-count-db
+status:
+  loadBalancer: {}
