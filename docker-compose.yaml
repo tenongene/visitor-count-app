@@ -1,0 +1,15 @@
+version: "3.9"
+services: 
+  web:
+    build: .
+    ports:
+      - 7575:7575
+    depends_on:
+      - db
+
+  db:
+    image: "redis:7-alpine"
+    ports: 
+      - 6379:6379
+    restart: always
+    

@@ -12,10 +12,14 @@ app.set('view engine', 'ejs');
 
 
 //initialize redis-db
-const client = redis.createClient();
+const client = redis.createClient({
+  socket: {
+  host: "db"
+  }
+});
 client.connect();
 
-//defining get route
+// defining get route
 app.get('/',  (req, res) => {
   client.get('visit_count')
   .then(result => {
